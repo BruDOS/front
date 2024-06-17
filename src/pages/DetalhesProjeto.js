@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import { Typography, Button, Modal, Box } from '@mui/material';
+import './style/detalhesprojeto.css';
 import './style/projetos.css';
-import { Card } from 'react-bootstrap';
+import { Card, Container, Row, Col} from 'react-bootstrap';
 
 const DetalheProjeto = () => {
     let { id } = useParams();
@@ -35,6 +36,7 @@ const DetalheProjeto = () => {
             setName_project(response.data.name_project);
             setStatus_project(response.data.status_project);
             setResume_project(response.data.resume_project);
+            setProjetoId(response.data.id_project)
             console.log("teste: ", response.data);
         } catch (error) {
             console.error('Erro ao buscar projetos:', error);
@@ -45,6 +47,7 @@ const DetalheProjeto = () => {
         try {
             const response = await axios.get(`http://localhost:4000/task/project/${id}`);
             setTarefas(response.data);
+            console.log("ProjetoId: ", id); // Printando projetoId no console
             console.log("Tarefas: ", response.data);
         } catch (error) {
             console.error('Erro ao buscar tarefas:', error);
@@ -62,48 +65,92 @@ const DetalheProjeto = () => {
             });
             setOpenCriacao(false);
             fetchTasks();
-        } catch {
+        } catch (error) {
             console.error("Erro durante o cadastro:", error);
             if (error.response && error.response.status === 404) {
                 setError("Credenciais inválidas");
             } else {
-                setError(error.message || "Credenciais inválidas");
+                setError(error.message || "Erro ao criar tarefa");
             }
         }
     }
 
+    const handleOpenCriacao = () => {
+        setOpenCriacao(true);
+    };
+
+    const handleCloseCriacao = () => {
+        setOpenCriacao(false);
+    };
+
     return (
+        <main className='fundo-task'>
+            <Container className="mt-5">
+                <Row>
+                    <Col>
+                        <h2>Detalhes do Projeto</h2>
+                        <p>ID do Projeto: {id}</p>
+                        <p>nome do Projeto: {name_project}</p>
+                        <p>status do Projeto: {status_project}</p>
+                        <p>resumo do Projeto: {resume_project}</p>
+                    </Col>
+                </Row>
 
-        <div className="container mt-5">
-            <h2>Detalhes do Projeto</h2>
-            <p>ID do Projeto: {id}</p>
-            <p>nome do Projeto: {name_project}</p>
-            <p>status do Projeto: {status_project}</p>
-            <p>resumo do Projeto: {resume_project}</p>
-            {/* Outras informações do projeto podem ser renderizadas aqui */}
-            
-            <h1>Tarefas</h1>
-            {tarefas.length > 0 ? (
-                tarefas.map((tarefa) => (
-                    <Card key={tarefa.id}>
-                        <Card.Body>
-                            <Card.Title>{tarefa.name}</Card.Title>
-                            <Card.Text>{tarefa.description}</Card.Text>
-                        </Card.Body>
-                    </Card>
-                ))
-            ) : (
-                <p>Nenhuma tarefa encontrada.</p>
-            )}
+                <Row>
+                    <Col>
+                        <h1>Tarefas</h1>
+                        {tarefas.length > 0 ? (
+                            tarefas.map((tarefa) => (
+                                <Card key={tarefa.id} className="mb-3">
+                                    <Card.Body>
+                                        <Card.Title>{tarefa.name}</Card.Title>
+                                        <Card.Text>{tarefa.description}</Card.Text>
+                                    </Card.Body>
+                                </Card>
+                            ))
+                        ) : (
+                            <p>Nenhuma tarefa encontrada.</p>
+                        )}
+                    </Col>
+                </Row>
 
-            <Card>
+                <Row>
+                    <Col>
+                        <Button variant="outlined" color="primary" onClick={handleOpenCriacao}>
+                            Adicionar Tarefas
+                        </Button>
+                    </Col>
+                </Row>
 
-            </Card>
-            <Button variant="outlined" color="primary" onClick={handleCriacaoTask}>
-                Adicionar Tarefas
-            </Button>
-        </div>
-
+                <Modal open={openCriacao} onClose={handleCloseCriacao}>
+                    <Box sx={{ width: 400, p: 4,  margin: 'auto', marginTop: '10%' }}>
+                        <form onSubmit={handleCriacaoTask}>
+                            <div className="form-group">
+                                <label htmlFor="name">Nome da Tarefa</label>
+                                <input
+                                    type='text'
+                                    id='name'
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)} 
+                                    className="form-control"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="description">Descrição</label>
+                                <input
+                                    type='text'
+                                    id='description'
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)} 
+                                    className="form-control"
+                                />
+                            </div>
+                            <button type="submit" className="btn btn-primary">Salvar</button>
+                        </form>
+                    </Box>
+                </Modal>
+            </Container>
+        </main>
     );
 };
 

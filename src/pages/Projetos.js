@@ -79,11 +79,6 @@ const Projetos = () => {
         window.location.href = url;
     };
 
-    const handleClose = () => {
-        setOpen(false);
-        setSelectedProject(null);
-    };
-
     const handleOpenCriacao = () => {
         setOpenCriacao(true);
     };
