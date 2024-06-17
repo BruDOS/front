@@ -75,6 +75,8 @@ const Projetos = () => {
     const handleOpen = (project) => {
         setSelectedProject(project);
         setOpen(true);
+        let url = `/detalheprojeto/${project.id_project}`;
+        window.location.href = url;
     };
 
     const handleClose = () => {
@@ -88,12 +90,6 @@ const Projetos = () => {
 
     const handleCloseCriacao = () => {
         setOpenCriacao(false);
-    };
-
-    const handleNavigateToProject = () => {
-        if (selectedProject) {
-            navigate(`/project/${selectedProject.id_project}`);
-        }
     };
 
     useEffect(() => {
@@ -160,27 +156,6 @@ const Projetos = () => {
                         </div>
                         <button type="submit" variant="primary">Salvar</button>
                     </form>
-                </Box>
-            </Modal>
-
-            <Modal open={open} onClose={handleClose}>
-                <Box sx={{ width: 400, p: 4, bgcolor: 'background.paper', margin: 'auto', marginTop: '10%' }}>
-                    {selectedProject && (
-                        <div>
-                            <Typography variant="h4" component="h2">
-                                {selectedProject.name_project}
-                            </Typography>
-                            <Typography color="textSecondary">
-                                Status: {selectedProject.status_project}
-                            </Typography>
-                            <Typography variant="body2" component="p">
-                                {selectedProject.resume_project}
-                            </Typography>
-                            <Button variant="contained" color="primary" onClick={handleNavigateToProject}>
-                                Va para a página do projeto
-                            </Button>
-                        </div>
-                    )}
                 </Box>
             </Modal>
         </div>
