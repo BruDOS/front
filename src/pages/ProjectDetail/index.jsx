@@ -1,18 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Button, Modal, Box } from "@mui/material";
+import {
+  Button,
+  Modal,
+  Box,
+  Container,
+  Typography,
+  Grid,
+  Card,
+  TextField,
+} from "@mui/material";
 import "./styles.css";
-import { Card, Container, Row, Col } from "react-bootstrap";
+// import { Card, Container, Row, Col } from "react-bootstrap";
 import { Header } from "../../components/Header";
 
 export const ProjectDetail = () => {
   let { id } = useParams();
 
+  // dados de projeto
   const [name_project, setName_project] = useState();
   const [status_project, setStatus_project] = useState();
   const [resume_project, setResume_project] = useState();
 
+  // dados de task
   const [name, setName] = useState();
   const [description, setDescription] = useState();
   const [projetoId, setProjetoId] = useState();
@@ -62,7 +73,7 @@ export const ProjectDetail = () => {
         description,
         projetoId,
       });
-      setOpenCriacao(false);
+      handleCloseCriacao();
       fetchTasks();
     } catch (error) {
       console.error("Erro durante o cadastro:", error);
@@ -80,84 +91,188 @@ export const ProjectDetail = () => {
 
   const handleCloseCriacao = () => {
     setOpenCriacao(false);
+    setName("");
+    setDescription("");
+    setError("");
   };
 
   return (
     <>
       <Header />
-      <main className="fundo-task">
-        <Container className="mt-5">
-          <Row>
-            <Col>
-              <h2>Detalhes do Projeto</h2>
-              <p>ID do Projeto: {id}</p>
-              <p>nome do Projeto: {name_project}</p>
-              <p>status do Projeto: {status_project}</p>
-              <p>resumo do Projeto: {resume_project}</p>
-            </Col>
-          </Row>
+      <Container sx={{ marginTop: 2 }}>
+        <Box
+          sx={{
+            height: "80px",
+            alignItems: "center",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Typography variant="h4" component="h2" sx={{ textAlign: "center" }}>
+            Projeto
+          </Typography>
+        </Box>
+        <Card
+          onClick={handleOpenCriacao}
+          sx={{
+            borderRadius: 5,
+            padding: 4,
+            alignContent: "center",
+            minHeight: 40,
+          }}
+        >
+          <Typography variant="h4" component="h2" sx={{ textAlign: "center" }}>
+            {name_project}
+          </Typography>
+          <Typography variant="h6" component="h2" sx={{ textAlign: "center" }}>
+            {status_project}
+          </Typography>
+          <br />
+          <Typography variant="h5" component="h2" sx={{ textAlign: "center" }}>
+            {resume_project}
+          </Typography>
+        </Card>
+      </Container>
 
-          <Row>
-            <Col>
-              <h1>Tarefas</h1>
-              {tarefas.length > 0 ? (
-                tarefas.map((tarefa) => (
-                  <Card key={tarefa.id} className="mb-3">
-                    <Card.Body>
-                      <Card.Title>{tarefa.name}</Card.Title>
-                      <Card.Text>{tarefa.description}</Card.Text>
-                    </Card.Body>
-                  </Card>
-                ))
-              ) : (
-                <p>Nenhuma tarefa encontrada.</p>
-              )}
-            </Col>
-          </Row>
-
-          <Row>
-            <Col>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={handleOpenCriacao}
+      <Container component="main" sx={{ marginTop: 2 }}>
+        <Box
+          sx={{
+            height: "80px",
+            alignItems: "center",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Typography variant="h4" component="h2" sx={{ textAlign: "center" }}>
+            To-Do
+          </Typography>
+        </Box>
+        <Grid container spacing={2}>
+          {/* Card de novo to-do */}
+          <Grid item xs={12} md={6} lg={4}>
+            <Card
+              onClick={handleOpenCriacao}
+              sx={{
+                borderRadius: 5,
+                padding: 4,
+                alignContent: "center",
+                minHeight: 40,
+                height: "100%",
+                "&:hover": {
+                  cursor: "pointer",
+                },
+              }}
+            >
+              <Typography
+                variant="h5"
+                component="h2"
+                sx={{ textAlign: "center" }}
               >
-                Adicionar Tarefas
-              </Button>
-            </Col>
-          </Row>
+                + Novo To-Do
+              </Typography>
+            </Card>
+          </Grid>
+          {/* to-dos do usuario */}
+          {tarefas.map((tarefa) => (
+            <Grid item xs={12} md={6} lg={4} key={tarefa.id}>
+              {/* TODO: Adicionar a pagina de tarefas (to-dos) */}
+              {/* <Link
+                to={`/projects/${project.id_project}`}
+                style={{ textDecoration: "none" }}
+                sx={{
+                  "&:hover": {
+                    cursor: "pointer",
+                  },
+                }}
+              > */}
+              <Card
+                sx={{
+                  borderRadius: 5,
+                  padding: 4,
+                  alignContent: "center",
+                  verticalAlign: "center",
+                  minHeight: 40,
+                  height: "100%",
+                }}
+              >
+                <Typography
+                  variant="h5"
+                  component="h2"
+                  sx={{ textAlign: "center" }}
+                >
+                  {tarefa?.name}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  component="p"
+                  sx={{ textAlign: "center" }}
+                >
+                  {tarefa?.description}
+                </Typography>
+              </Card>
+              {/* </Link> */}
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
 
-          <Modal open={openCriacao} onClose={handleCloseCriacao}>
-            <Box sx={{ width: 400, p: 4, margin: "auto", marginTop: "10%" }}>
-              <form onSubmit={handleCriacaoTask}>
-                <div className="form-group">
-                  <label htmlFor="name">Nome da Tarefa</label>
-                  <input
-                    type="text"
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="form-control"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="description">Descrição</label>
-                  <input
-                    type="text"
-                    id="description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    className="form-control"
-                  />
-                </div>
-                <button type="submit" className="btn btn-primary">
-                  Salvar
-                </button>
-              </form>
-            </Box>
-          </Modal>
-        </Container>
-      </main>
+      {/* Modal criação de novo to-do */}
+      <Modal open={openCriacao} onClose={handleCloseCriacao}>
+        <Card
+          variant="outlined"
+          sx={{
+            minWidth: 400,
+            p: 5,
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <Typography
+            variant="h4"
+            component="h1"
+            sx={{ textAlign: "center", mb: 4 }}
+          >
+            Novo To-Do
+          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth={true}
+                id="outlined-basic"
+                label="Nome"
+                variant="outlined"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth={true}
+                id="outlined-basic"
+                label="Descrição"
+                variant="outlined"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button onClick={handleCriacaoTask}>Salvar</Button>
+            </Grid>
+            {!!error && (
+              <Grid item xs={12}>
+                <span
+                  style={{ display: "flex", justifyContent: "center" }}
+                  className="error-message"
+                >
+                  {error}
+                </span>
+              </Grid>
+            )}
+          </Grid>
+        </Card>
+      </Modal>
     </>
   );
 };

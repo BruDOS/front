@@ -80,7 +80,7 @@ export function Projects() {
         }
       );
       console.log(response.data);
-      setOpenCriacao(false);
+      handleCloseCriacao();
       fetchProjects(); // Atualiza a lista de projetos após a criação
     } catch (error) {
       console.error("Erro durante o cadastro: ", error);
