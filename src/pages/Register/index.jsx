@@ -96,7 +96,7 @@ export function Register() {
                 <TextField
                   fullWidth={true}
                   id="outlined-basic"
-                  label="Username"
+                  label="Usuário"
                   variant="outlined"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
