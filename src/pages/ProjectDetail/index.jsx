@@ -4,6 +4,7 @@ import axios from "axios";
 import { Button, Modal, Box } from "@mui/material";
 import "./styles.css";
 import { Card, Container, Row, Col } from "react-bootstrap";
+import { Header } from "../../components/Header";
 
 export const ProjectDetail = () => {
   let { id } = useParams();
@@ -82,78 +83,81 @@ export const ProjectDetail = () => {
   };
 
   return (
-    <main className="fundo-task">
-      <Container className="mt-5">
-        <Row>
-          <Col>
-            <h2>Detalhes do Projeto</h2>
-            <p>ID do Projeto: {id}</p>
-            <p>nome do Projeto: {name_project}</p>
-            <p>status do Projeto: {status_project}</p>
-            <p>resumo do Projeto: {resume_project}</p>
-          </Col>
-        </Row>
+    <>
+      <Header />
+      <main className="fundo-task">
+        <Container className="mt-5">
+          <Row>
+            <Col>
+              <h2>Detalhes do Projeto</h2>
+              <p>ID do Projeto: {id}</p>
+              <p>nome do Projeto: {name_project}</p>
+              <p>status do Projeto: {status_project}</p>
+              <p>resumo do Projeto: {resume_project}</p>
+            </Col>
+          </Row>
 
-        <Row>
-          <Col>
-            <h1>Tarefas</h1>
-            {tarefas.length > 0 ? (
-              tarefas.map((tarefa) => (
-                <Card key={tarefa.id} className="mb-3">
-                  <Card.Body>
-                    <Card.Title>{tarefa.name}</Card.Title>
-                    <Card.Text>{tarefa.description}</Card.Text>
-                  </Card.Body>
-                </Card>
-              ))
-            ) : (
-              <p>Nenhuma tarefa encontrada.</p>
-            )}
-          </Col>
-        </Row>
+          <Row>
+            <Col>
+              <h1>Tarefas</h1>
+              {tarefas.length > 0 ? (
+                tarefas.map((tarefa) => (
+                  <Card key={tarefa.id} className="mb-3">
+                    <Card.Body>
+                      <Card.Title>{tarefa.name}</Card.Title>
+                      <Card.Text>{tarefa.description}</Card.Text>
+                    </Card.Body>
+                  </Card>
+                ))
+              ) : (
+                <p>Nenhuma tarefa encontrada.</p>
+              )}
+            </Col>
+          </Row>
 
-        <Row>
-          <Col>
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={handleOpenCriacao}
-            >
-              Adicionar Tarefas
-            </Button>
-          </Col>
-        </Row>
+          <Row>
+            <Col>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleOpenCriacao}
+              >
+                Adicionar Tarefas
+              </Button>
+            </Col>
+          </Row>
 
-        <Modal open={openCriacao} onClose={handleCloseCriacao}>
-          <Box sx={{ width: 400, p: 4, margin: "auto", marginTop: "10%" }}>
-            <form onSubmit={handleCriacaoTask}>
-              <div className="form-group">
-                <label htmlFor="name">Nome da Tarefa</label>
-                <input
-                  type="text"
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="form-control"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="description">Descrição</label>
-                <input
-                  type="text"
-                  id="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  className="form-control"
-                />
-              </div>
-              <button type="submit" className="btn btn-primary">
-                Salvar
-              </button>
-            </form>
-          </Box>
-        </Modal>
-      </Container>
-    </main>
+          <Modal open={openCriacao} onClose={handleCloseCriacao}>
+            <Box sx={{ width: 400, p: 4, margin: "auto", marginTop: "10%" }}>
+              <form onSubmit={handleCriacaoTask}>
+                <div className="form-group">
+                  <label htmlFor="name">Nome da Tarefa</label>
+                  <input
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="form-control"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="description">Descrição</label>
+                  <input
+                    type="text"
+                    id="description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    className="form-control"
+                  />
+                </div>
+                <button type="submit" className="btn btn-primary">
+                  Salvar
+                </button>
+              </form>
+            </Box>
+          </Modal>
+        </Container>
+      </main>
+    </>
   );
 };

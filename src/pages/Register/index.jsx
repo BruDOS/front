@@ -102,7 +102,7 @@ export function Register() {
                   onChange={(e) => setUsername(e.target.value)}
                 />
               </Grid>
-              <Grid item xs="12" md="12">
+              <Grid item xs={12} md={12}>
                 <TextField
                   fullWidth={true}
                   id="outlined-basic"
@@ -112,7 +112,7 @@ export function Register() {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
-              <Grid item xs="12" md="12">
+              <Grid item xs={12} md={12}>
                 <TextField
                   fullWidth={true}
                   id="outlined-basic"
@@ -123,7 +123,7 @@ export function Register() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </Grid>
-              <Grid item xs="12" md="12">
+              <Grid item xs={12} md={12}>
                 <Autocomplete
                   options={securityQuestions}
                   renderInput={(params) => (
@@ -135,7 +135,7 @@ export function Register() {
                   )}
                 />
               </Grid>
-              <Grid item xs="12" md="12">
+              <Grid item xs={12} md={12}>
                 <TextField
                   fullWidth={true}
                   id="outlined-basic"
@@ -146,7 +146,7 @@ export function Register() {
                   onChange={(e) => setSecret_Question(e.target.value)}
                 />
               </Grid>
-              <Grid item xs="12" md="6">
+              <Grid item xs={12} md={6}>
                 <Button
                   fullWidth={true}
                   onClick={handleRegister}
@@ -159,7 +159,7 @@ export function Register() {
                   Cadastrar
                 </Button>
               </Grid>
-              <Grid item xs="12" md="6">
+              <Grid item xs={12} md={6}>
                 <Link to="/" style={{ textDecoration: "none" }}>
                   <Button
                     fullWidth={true}

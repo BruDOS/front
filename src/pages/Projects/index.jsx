@@ -10,7 +10,7 @@ import {
   Button,
 } from "@mui/material";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
+import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Header } from "../../components/Header";
@@ -37,14 +37,29 @@ export function Projects() {
   ];
 
   useEffect(() => {
-    // Função para decodificar o token JWT e extrair o ID do usuário
     const token = localStorage.getItem("token");
+    console.log("Token recuperado:", token);
     if (token) {
-      const decoded = jwtDecode(token);
-      setUserIdUser(decoded.sub); // Extrai o 'sub' e define em userIdUser
+      try {
+        const decoded = jwtDecode(token);
+        console.log("Token decodificado:", decoded);
+        setUserIdUser(decoded.sub);
+      } catch (error) {
+        console.error("Erro ao decodificar o token:", error);
+      }
+    } else {
+      console.log("Token não encontrado no localStorage.");
     }
-    fetchProjects();
   }, []);
+
+  useEffect(() => {
+    console.log("Valor de userIdUser:", userIdUser);
+    if (userIdUser) {
+      fetchProjects();
+    } else {
+      console.log("userIdUser está nulo ou indefinido.");
+    }
+  }, [userIdUser]);
 
   const handleCriacaoProjetos = async (e) => {
     try {
@@ -79,6 +94,7 @@ export function Projects() {
 
   const fetchProjects = async () => {
     try {
+      console.log("Buscando projetos para userIdUser:", userIdUser);
       const response = await axios.get(
         `http://localhost:4000/project/user/${userIdUser}`,
         {
